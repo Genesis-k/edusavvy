@@ -1,0 +1,918 @@
+/* ==========================================================================
+   0. RESET & ROOT VARIABLES
+   ========================================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* Color Palette */
+    --navy: #1B3A5C;
+    --blue: #1B6CA8;
+    --sky: #EAF3FB;
+    --amber: #E8A020;
+    --amber-lt: #FFF8E8;
+    --green: #217A4B;
+    --green-lt: #E6F5EE;
+    --red: #C0392B;
+    --red-lt: #FFF0EE;
+    --teal: #0F6E56;
+    --teal-lt: #E1F5EE;
+    --purple: #534AB7;
+    --purple-lt: #EEEDFE;
+    --g50: #F8F9FA;
+    --g100: #F1F3F5;
+    --g200: #E9ECEF;
+    --g400: #ADB5BD;
+    --g600: #6C757D;
+    
+    /* Text & Boundaries */
+    --text: #1B3A5C;
+    --text2: #4A5568;
+    --border: #DEE2E6;
+    
+    /* Layout Constants */
+    --r: 10px;
+    --rlg: 16px;
+    --sh: 0 1px 3px rgba(0, 0, 0, .08), 0 4px 12px rgba(0, 0, 0, .04);
+    --font: 'Plus Jakarta Sans', sans-serif;
+    --fhead: 'Space Grotesk', sans-serif;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--font);
+    color: var(--text);
+    background: var(--g50);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Typography */
+h1, h2, h3 {
+    font-family: var(--fhead);
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+h1 {
+    font-size: clamp(1.5rem, 4vw, 2.1rem);
+}
+
+h2 {
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+}
+
+h3 {
+    font-size: 1rem;
+}
+
+p {
+    color: var(--text2);
+}
+
+/* Form Controls */
+button {
+    font-family: var(--font);
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+input, select {
+    font-family: var(--font);
+}
+
+/* ==========================================================================
+   1. AUTHENTICATION MODULE
+   ========================================================================== */
+.auth-bg {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--navy) 0%, #1B6CA8 60%, #0F6E56 100%);
+    padding: 1.5rem;
+}
+
+.auth-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2rem 1.85rem;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, .22);
+}
+
+.auth-logo {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-family: var(--fhead);
+    font-weight: 700;
+    font-size: 1.35rem;
+    color: var(--navy);
+}
+
+.auth-logo span {
+    color: var(--amber);
+}
+
+.auth-tabs {
+    display: flex;
+    border-bottom: 2px solid var(--border);
+    margin: 1rem 0 1.25rem;
+}
+
+.auth-tab {
+    flex: 1;
+    padding: .55rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: .84rem;
+    color: var(--g600);
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all .15s;
+}
+
+.auth-tab.active {
+    color: var(--blue);
+    border-bottom-color: var(--blue);
+}
+
+/* School Selection Grid */
+.school-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .4rem;
+    max-height: 220px;
+    overflow-y: auto;
+    padding: .1rem 0;
+}
+
+.sopt {
+    padding: .45rem .6rem;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    transition: all .15s;
+    text-align: left;
+    font-size: .74rem;
+}
+
+.sopt:hover {
+    border-color: var(--blue);
+    background: var(--sky);
+}
+
+.sopt.sel {
+    border-color: var(--blue);
+    background: var(--sky);
+}
+
+.sopt .sn {
+    font-size: .78rem;
+    font-weight: 700;
+    color: var(--navy);
+    display: block;
+}
+
+.sopt .sl {
+    font-size: .66rem;
+    color: var(--g600);
+    display: block;
+    margin-top: .05rem;
+}
+
+.sopt .st {
+    display: inline-block;
+    font-size: .6rem;
+    padding: .06rem .34rem;
+    border-radius: 99px;
+    background: var(--sky);
+    color: var(--blue);
+    font-weight: 600;
+    margin-top: .1rem;
+}
+
+.sopt.sel .st {
+    background: var(--blue);
+    color: #fff;
+}
+
+/* ==========================================================================
+   2. NAVIGATION BAR
+   ========================================================================== */
+.nav {
+    background: var(--navy);
+    padding: 0 1.25rem;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+}
+
+.nav-brand {
+    font-family: var(--fhead);
+    font-weight: 700;
+    font-size: 1rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.nav-brand span {
+    color: var(--amber);
+}
+
+.nav-links {
+    display: flex;
+    gap: .08rem;
+    flex: 1;
+    overflow-x: auto;
+}
+
+.nl {
+    color: rgba(255, 255, 255, .72);
+    font-size: .78rem;
+    font-weight: 500;
+    padding: .3rem .58rem;
+    border-radius: 6px;
+    transition: all .15s;
+    white-space: nowrap;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.nl:hover, 
+.nl.active {
+    color: #fff;
+    background: rgba(255, 255, 255, .13);
+}
+
+.nav-user {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    flex-shrink: 0;
+}
+
+.nav-nm {
+    color: rgba(255, 255, 255, .78);
+    font-size: .74rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* User Avatar Dropdown */
+.av-wrap {
+    position: relative;
+}
+
+.av {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: .68rem;
+    cursor: pointer;
+}
+
+.av-menu {
+    position: absolute;
+    top: calc(100% + 7px);
+    right: 0;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, .14);
+    border: 1px solid var(--border);
+    min-width: 190px;
+    overflow: hidden;
+    z-index: 300;
+    animation: slideIn .15s ease;
+}
+
+.av-head {
+    padding: .65rem .85rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--g50);
+}
+
+.av-item {
+    padding: .5rem .85rem;
+    font-size: .8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    color: var(--text);
+    transition: background .1s;
+}
+
+.av-item:hover {
+    background: var(--g50);
+}
+
+.av-item.danger {
+    color: var(--red);
+}
+
+.av-item.danger:hover {
+    background: var(--red-lt);
+}
+
+/* ==========================================================================
+   3. BASIC CORE LAYOUT
+   ========================================================================== */
+.page {
+    min-height: calc(100vh - 55px);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+}
+
+.ph {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    padding: 1.85rem 1.25rem;
+    color: #fff;
+}
+
+.ph h1 {
+    color: #fff;
+}
+
+.ph p {
+    color: rgba(255, 255, 255, .8);
+    margin-top: .3rem;
+}
+
+.sp {
+    padding: 1.5rem 1.25rem;
+}
+
+/* Layout Grid Utilities */
+.g2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .9rem;
+}
+
+.g3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .9rem;
+}
+
+.g4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: .9rem;
+}
+
+/* Container Panels */
+.card {
+    background: #fff;
+    border-radius: var(--rlg);
+    border: 1px solid var(--border);
+    box-shadow: var(--sh);
+    padding: 1.1rem;
+}
+
+.sc {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--rlg);
+    padding: .9rem 1.1rem;
+    box-shadow: var(--sh);
+}
+
+.sc .lbl {
+    font-size: .67rem;
+    color: var(--g600);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.sc .val {
+    font-size: 1.65rem;
+    font-weight: 700;
+    font-family: var(--fhead);
+    color: var(--navy);
+    margin: .15rem 0;
+}
+
+.sc .sub {
+    font-size: .7rem;
+    color: var(--g600);
+}
+
+/* ==========================================================================
+   4. BUTTONS, BADGES, & FIELDS
+   ========================================================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .3rem;
+    padding: .5rem 1rem;
+    border-radius: var(--r);
+    font-size: .84rem;
+    font-weight: 600;
+    transition: all .15s;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font);
+}
+
+.bp {
+    background: var(--blue);
+    color: #fff;
+}
+
+.bp:hover {
+    background: var(--navy);
+}
+
+.bfull {
+    width: 100%;
+    padding: .68rem;
+    font-size: .9rem;
+}
+
+.bo {
+    background: transparent;
+    color: var(--blue);
+    border: 1.5px solid var(--blue);
+}
+
+.bo:hover {
+    background: var(--sky);
+}
+
+.ba {
+    background: var(--amber);
+    color: var(--navy);
+}
+
+.ba:hover {
+    filter: brightness(.95);
+}
+
+.bg_ {
+    background: var(--g100);
+    color: var(--text);
+}
+
+.bg_:hover {
+    background: var(--g200);
+}
+
+.bsm {
+    padding: .32rem .7rem;
+    font-size: .75rem;
+}
+
+.btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+/* Badges */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: .14rem .46rem;
+    border-radius: 99px;
+    font-size: .65rem;
+    font-weight: 600;
+}
+
+.bb {
+    background: var(--sky);
+    color: var(--blue);
+}
+
+.bg2 {
+    background: var(--green-lt);
+    color: var(--green);
+}
+
+.ba2 {
+    background: var(--amber-lt);
+    color: #854F0B;
+}
+
+.br {
+    background: var(--red-lt);
+    color: var(--red);
+}
+
+.bt {
+    background: var(--teal-lt);
+    color: var(--teal);
+}
+
+.bgr {
+    background: var(--g100);
+    color: var(--g600);
+}
+
+/* Alerts */
+.alert {
+    padding: .68rem .85rem;
+    border-radius: var(--r);
+    font-size: .8rem;
+    border-left: 4px solid;
+    line-height: 1.5;
+}
+
+.ai {
+    background: var(--sky);
+    border-color: var(--blue);
+    color: var(--navy);
+}
+
+.as_ {
+    background: var(--green-lt);
+    border-color: var(--green);
+    color: var(--teal);
+}
+
+.aw {
+    background: var(--amber-lt);
+    border-color: var(--amber);
+    color: #633806;
+}
+
+.ad {
+    background: var(--red-lt);
+    border-color: var(--red);
+    color: var(--red);
+}
+
+/* Progress Bars */
+.pb {
+    height: 7px;
+    background: var(--g200);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.pbf {
+    height: 100%;
+    border-radius: 99px;
+    background: var(--blue);
+    transition: width .5s ease;
+}
+
+/* Inputs */
+.fi {
+    padding: .54rem .78rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--r);
+    font-size: .86rem;
+    background: #fff;
+    color: var(--text);
+    transition: border-color .15s;
+    width: 100%;
+}
+
+.fi:focus {
+    outline: none;
+    border-color: var(--blue);
+}
+
+.fi.err {
+    border-color: var(--red);
+}
+
+.em {
+    color: var(--red);
+    font-size: .72rem;
+    margin-top: .14rem;
+}
+
+.fg {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    margin-bottom: .82rem;
+}
+
+.fg label {
+    font-size: .77rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* ==========================================================================
+   5. DATA TABLES & SCHEDULING
+   ========================================================================== */
+.twrap {
+    overflow-x: auto;
+    border-radius: var(--r);
+    border: 1px solid var(--border);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .8rem;
+}
+
+thead tr {
+    background: var(--g50);
+}
+
+thead th {
+    padding: .52rem .8rem;
+    text-align: left;
+    font-size: .65rem;
+    font-weight: 700;
+    color: var(--g600);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    border-bottom: 1px solid var(--border);
+}
+
+tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background .1s;
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background: var(--g50);
+}
+
+tbody td {
+    padding: .68rem .8rem;
+    color: var(--text);
+    vertical-align: middle;
+}
+
+.tslot {
+    padding: .44rem .65rem;
+    border-radius: 7px;
+    font-size: .68rem;
+    font-weight: 600;
+    border-left: 3px solid;
+    margin-bottom: .32rem;
+}
+
+/* ==========================================================================
+   6. QUIZ STYLING
+   ========================================================================== */
+.qopt {
+    width: 100%;
+    padding: .68rem .8rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--r);
+    background: #fff;
+    text-align: left;
+    font-size: .82rem;
+    color: var(--text);
+    cursor: pointer;
+    transition: all .15s;
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    font-family: var(--font);
+}
+
+.qopt:hover {
+    border-color: var(--blue);
+    background: var(--sky);
+}
+
+.qopt.correct {
+    border-color: var(--green);
+    background: var(--green-lt);
+    color: var(--teal);
+}
+
+.qopt.wrong {
+    border-color: var(--red);
+    background: var(--red-lt);
+    color: var(--red);
+}
+
+.qopt.sel {
+    border-color: var(--blue);
+    background: var(--sky);
+}
+
+.qltr {
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    background: var(--g100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: .67rem;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   7. CHAT & AGENT SYSTEM CONTEXT
+   ========================================================================== */
+.cmsg {
+    display: flex;
+    gap: .44rem;
+    align-items: flex-start;
+}
+
+.cmsg.user {
+    flex-direction: row-reverse;
+}
+
+.cbub {
+    max-width: 74%;
+    padding: .56rem .8rem;
+    border-radius: 13px;
+    font-size: .81rem;
+    line-height: 1.52;
+    white-space: pre-wrap;
+}
+
+.cmsg.bot .cbub {
+    background: var(--sky);
+    color: var(--navy);
+    border-bottom-left-radius: 4px;
+}
+
+.cmsg.user .cbub {
+    background: var(--blue);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+}
+
+.cmsg.warn .cbub {
+    background: var(--red-lt);
+    color: var(--red);
+    border: 1px solid var(--red);
+}
+
+.cmsg.guardian .cbub {
+    background: var(--purple-lt);
+    color: var(--purple);
+    border-bottom-left-radius: 4px;
+}
+
+.cav {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .63rem;
+    font-weight: 700;
+}
+
+/* Agent System Admin Log Terminal */
+.alog {
+    background: #0d1117;
+    border-radius: var(--r);
+    padding: .78rem;
+    font-family: 'Courier New', monospace;
+    font-size: .72rem;
+    max-height: 260px;
+    overflow-y: auto;
+    line-height: 1.7;
+}
+
+.l-scout { color: #3fb950; }
+.l-guardian { color: #d2a8ff; }
+.l-info { color: #58a6ff; }
+.l-alert { color: #ff7b72; }
+.l-time { color: #8b949e; }
+
+/* ==========================================================================
+   8. MODALS & OTHER VIEWS
+   ========================================================================== */
+.modal-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .45);
+    z-index: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.modal {
+    background: #fff;
+    border-radius: var(--rlg);
+    padding: 1.6rem;
+    width: 100%;
+    max-width: 455px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, .2);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.role-btn {
+    flex: 1;
+    padding: .4rem;
+    font-size: .78rem;
+    border-radius: var(--r);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .15s;
+    border: 1.5px solid var(--border);
+    background: #fff;
+    color: var(--g600);
+    font-family: var(--font);
+}
+
+.role-btn.sel {
+    background: var(--blue);
+    color: #fff;
+    border-color: var(--blue);
+}
+
+/* Alignment Utilities */
+.ml-a { margin-left: auto; }
+.fw7 { font-weight: 700; }
+.fh { font-family: var(--fhead); }
+.sm { font-size: .78rem; }
+.xs { font-size: .67rem; }
+.cg { color: var(--g600); }
+.c2 { color: var(--text2); }
+
+/* ==========================================================================
+   9. RESPONSIVE DESIGN BREAKPOINTS & ANIMATIONS
+   ========================================================================== */
+@media (max-width: 900px) {
+    .g3, .g4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .g2, .g3, .g4 {
+        grid-template-columns: 1fr;
+    }
+    .nav-links {
+        display: none;
+    }
+    .school-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Keyframes & Motion */
+@keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-7px); }
+    to { opacity: 1; transform: none; }
+}
+
+.fade {
+    animation: fadeIn .2s ease;
+}
