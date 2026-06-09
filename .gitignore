@@ -1,12 +1,23 @@
 # Ignore node_modules folder
 node_modules/
 
-# Ignore environment variables / secrets
-.env
-.env.local
-.venv
-venv
+# Python virtual environment
 venv/
+.venv/
+venv
+
+# Environment variables / secrets
+.env
+
+# Python cache files
+**/__pycache__/
+*.pyc
+
+# VS Code project settings
+.vscode/
+
+# Versioning folder or specific build files
+2.0.0/
 
 # Ignore OS-specific files
 .DS_Store
