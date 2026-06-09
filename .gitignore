@@ -17,7 +17,7 @@ venv
 .vscode/
 
 # Versioning folder or specific build files
-2.0.0/
+2.0.0
 
 # Ignore OS-specific files
 .DS_Store
